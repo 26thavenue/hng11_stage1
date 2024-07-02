@@ -173,3 +173,15 @@ import (
 func Handler(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 }
+
+func Main(){
+   http.HandleFunc("/", Handler)
+
+   fmt.Println("Starting server on :8080")
+
+   err := http.ListenAndServe(":8080", nil)
+
+    if err != nil {
+        fmt.Println("Error starting server:", err)
+    }
+}
