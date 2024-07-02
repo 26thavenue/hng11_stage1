@@ -104,7 +104,7 @@ func getIPAddress(r *http.Request) string {
 
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("visitor_name")
 	
     clientIP := getIPAddress(r)
@@ -135,7 +135,7 @@ func main() {
         log.Fatal("Error loading .env file")
     }
 
-    http.HandleFunc("/", handler)
+    http.HandleFunc("/", Handler)
 
     fmt.Println("Starting server on :8080")
 
