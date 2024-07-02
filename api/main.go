@@ -163,7 +163,7 @@
 //         fmt.Println("Error starting server:", err)
 //     }
 // }
-package main
+package handler
 
 import (
     "encoding/json"
@@ -177,7 +177,7 @@ type Response struct {
 
 // Greeting function that responds with a JSON message
 func Greeting(w http.ResponseWriter, r *http.Request) {
-    // Create a response message
+    
     response := Response{
         Message: "Hello there",
     }
@@ -185,11 +185,11 @@ func Greeting(w http.ResponseWriter, r *http.Request) {
     // Set the content type to application/json
     w.Header().Set("Content-Type", "application/json")
 
-    // Encode the response to JSON and write it to the response writer
+    
     json.NewEncoder(w).Encode(response)
 }
 
-// Handler is the exported function to be used by Vercel
+
 func Handler(w http.ResponseWriter, r *http.Request) {
     Greeting(w, r)
 }
