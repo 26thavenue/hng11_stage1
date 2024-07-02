@@ -164,32 +164,12 @@
 //     }
 // }
 package handler
-
+ 
 import (
-    "encoding/json"
-    "net/http"
+  "fmt"
+  "net/http"
 )
-
-// Response struct to hold the greeting message
-type Response struct {
-    Message string `json:"message"`
-}
-
-// Greeting function that responds with a JSON message
-func Greeting(w http.ResponseWriter, r *http.Request) {
-    
-    response := Response{
-        Message: "Hello there",
-    }
-
-    // Set the content type to application/json
-    w.Header().Set("Content-Type", "application/json")
-
-    
-    json.NewEncoder(w).Encode(response)
-}
-
-
+ 
 func Handler(w http.ResponseWriter, r *http.Request) {
-    Greeting(w, r)
+  fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 }
