@@ -3,12 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	_ "io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	_ "strings"
 
 	owm "github.com/briandowns/openweathermap"
 	"github.com/ipinfo/go/v2/ipinfo"
