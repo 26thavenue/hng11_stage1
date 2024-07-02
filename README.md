@@ -88,3 +88,4 @@ This Go application provides a simple HTTP server that returns the IP address, l
 - `handler(w http.ResponseWriter, r *http.Request)`: Main handler function that processes the request and returns the response.
 - `main()`: Initializes the server and loads environment variables.
 
+hng11_stage1.exe

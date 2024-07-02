@@ -143,8 +143,11 @@ func Greet(w http.ResponseWriter, r *http.Request){
 func main(){
     envError := godotenv.Load()
     if envError != nil {
-        log.Fatal("Error loading .env file")
+        fmt.Printf("Error loading .env file")
     }
+
+    log.Printf("API_KEY: %s", os.Getenv("API_KEY"))
+    log.Printf("WEATHER_API_KEY: %s", os.Getenv("WEATHER_API_KEY"))
 
     http.HandleFunc("/", Handler)
 
