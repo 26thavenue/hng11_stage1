@@ -44,13 +44,9 @@ func getLocationAndIP(r *http.Request) string {
 
     client := ipinfo.NewClient(nil, nil, token)
 
-    
-
-    // const ip_address = "8.8.8.8"
 
     ip_address := getIPAddress(r)
-
-    // fmt.Println(ip_address)
+    
 
 	info, err := client.GetIPInfo(net.ParseIP(ip_address))
 
@@ -58,7 +54,6 @@ func getLocationAndIP(r *http.Request) string {
 		log.Fatal(err)
 	}
 
-    
 
     city := info.City
 
