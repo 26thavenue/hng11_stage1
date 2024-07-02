@@ -140,7 +140,7 @@ func Greet(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(response)
 }
 
-func Main(){
+func main(){
     envError := godotenv.Load()
     if envError != nil {
         log.Fatal("Error loading .env file")
