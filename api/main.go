@@ -129,7 +129,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func main() {
+func Main(){
     envError := godotenv.Load()
     if envError != nil {
         log.Fatal("Error loading .env file")
