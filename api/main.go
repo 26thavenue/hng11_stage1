@@ -20,6 +20,10 @@ type Resp struct {
    Greeting    string  `json:"greeting"`
 }
 
+type Greeting struct {
+	Message string `json:"message"`
+}
+
 type WeatherCondition struct {
     Code        int
     Main        string
@@ -129,6 +133,18 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func Greet(w http.ResponseWriter, r *http.Request){
+    response := Greeting{
+		Message: "Hello there",
+	}
+
+	
+	w.Header().Set("Content-Type", "application/json")
+
+	
+	json.NewEncoder(w).Encode(response)
+}
+
 func Main(){
     envError := godotenv.Load()
     if envError != nil {
@@ -136,6 +152,8 @@ func Main(){
     }
 
     http.HandleFunc("/", Handler)
+
+    http.HandleFunc("/greet", Greet)
 
     fmt.Println("Starting server on :8080")
 
