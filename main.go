@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"strings"
 
 	owm "github.com/briandowns/openweathermap"
 	"github.com/ipinfo/go/v2/ipinfo"
@@ -84,23 +86,49 @@ func getWeatherInfo(loc string) owm.Main {
 
 
 func getIPAddress(r *http.Request) string {
+    // Check for X-Forwarded-For header first
+    ip := r.Header.Get("X-Forwarded-For")
+    if ip != "" {
+        
+        ips := strings.Split(ip, ",")
+        return strings.TrimSpace(ips[0])
+    }
+
+    
+    ip = r.Header.Get("X-Real-IP")
+    if ip != "" {
+        return ip
+    }
+
     ip, _, err := net.SplitHostPort(r.RemoteAddr)
-	
     if err != nil {
-        log.Println("Error getting IP address:", err)
         return ""
     }
 
-    userIP := net.ParseIP(ip)
-    if userIP == nil {
-        log.Println("Error parsing IP address:", err)
+    defer fmt.Println(ip)
+
+    
+    if net.ParseIP(ip).IsPrivate() {
+        return getPublicIP()
+    }
+
+    return ip
+}
+
+func getPublicIP() string {
+    resp, err := http.Get("https://api.ipify.org")
+    if err != nil {
+        return ""
+    }
+    defer resp.Body.Close()
+
+    ip, err := io.ReadAll(resp.Body)
+    if err != nil {
         return ""
     }
 
-    // fmt.Println(userIP)
-
-    return userIP.String()
-
+    fmt.Println(ip)
+    return string(ip)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +142,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
     temp := int(weatherArr.Temp)
 
-     greeting := fmt.Sprintf("Hello, %s! The temperature is %d degrees Celsius in %s.", name, temp, city)
+    greeting := fmt.Sprintf("Hello, %s! The temperature is %d degrees Celsius in %s.", name, temp, city)
 
     resp := Resp{
         Client_ip: clientIP,
@@ -149,11 +177,13 @@ func main(){
     log.Printf("API_KEY: %s", os.Getenv("API_KEY"))
     log.Printf("WEATHER_API_KEY: %s", os.Getenv("WEATHER_API_KEY"))
 
-    http.HandleFunc("/", Handler)
+    http.HandleFunc("/hello", Handler)
 
-    http.HandleFunc("/greet", Greet)
+    http.HandleFunc("/", Greet)
 
     const port = "8080"
+
+    fmt.Println("Sever has started")
 
     log.Fatal(http.ListenAndServe("0.0.0.0:" + port, nil))
 
