@@ -177,7 +177,7 @@ func main(){
     log.Printf("API_KEY: %s", os.Getenv("API_KEY"))
     log.Printf("WEATHER_API_KEY: %s", os.Getenv("WEATHER_API_KEY"))
 
-    http.HandleFunc("/hello", Handler)
+    http.HandleFunc("/api/hello", Handler)
 
     http.HandleFunc("/", Greet)
 
